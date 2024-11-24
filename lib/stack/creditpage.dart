@@ -67,13 +67,13 @@ class _CreditPageState extends State<CreditPage> with TickerProviderStateMixin {
     final mq = MediaQueryData.fromView(WidgetsBinding.instance.window);
     controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 600),
     );
     sizeAnimation = Tween(begin: -mq.size.height, end: 0.0).animate(controller);
 
     controller1 = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 600),
     );
     sizeAnimation1 =
         Tween(begin: -mq.size.height, end: 0.0).animate(controller1);
