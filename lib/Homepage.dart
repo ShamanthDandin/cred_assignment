@@ -1,20 +1,21 @@
 import 'package:cred_assignment/stack/creditpage.dart';
+import 'package:cred_assignment/stack_service.dart';
 import 'package:cred_assignment/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
 
-Future<List<dynamic>> fetchStackData() async {
-  try {
-    final String response =
-        await rootBundle.loadString('assets/mock_json.json');
-    final Map<String, dynamic> data = json.decode(response);
-    return data['items'];
-  } catch (e) {
-    print('Error loading local JSON: $e');
-    throw Exception('Error loading local JSON');
-  }
-}
+// Future<List<dynamic>> fetchStackData() async {
+//   try {
+//     final String response =
+//         await rootBundle.loadString('assets/mock_json.json');
+//     final Map<String, dynamic> data = json.decode(response);
+//     return data['items'];
+//   } catch (e) {
+//     print('Error loading local JSON: $e');
+//     throw Exception('Error loading local JSON');
+//   }
+// }
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -29,7 +30,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    stackData = fetchStackData();
+    stackData = StackService().fetchStack();
   }
 
   @override

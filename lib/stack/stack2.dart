@@ -6,12 +6,14 @@ class SimplePage2 extends StatelessWidget {
   final Function onexit1;
   final Function onnext;
   final Map<String, dynamic>? stack3;
+  bool? stackfinal;
 
-  const SimplePage2({
+  SimplePage2({
     super.key,
     required this.onexit1,
     required this.onnext,
     required this.stack3,
+    this.stackfinal,
   });
 
   @override
@@ -24,15 +26,18 @@ class SimplePage2 extends StatelessWidget {
           children: [
             Expanded(
               child: GestureDetector(
-                onTap: () => onexit1(),
+                onTap: () {
+                  onexit1();
+                  stackfinal = !stackfinal!;
+                },
                 child: Container(
-                  color: Colors.transparent,
+                  color: Colors.black26,
                   width: MediaQuery.of(context).size.width,
                 ),
               ),
             ),
             Container(
-              color: AppColors.stack2,
+              color: const Color.fromARGB(255, 31, 34, 44),
               width: MediaQuery.of(context).size.width,
               height: 550,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),

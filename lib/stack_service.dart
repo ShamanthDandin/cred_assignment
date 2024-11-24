@@ -19,16 +19,4 @@ class StackService {
       throw Exception('Error fetching data from API');
     }
   }
-
-  Future<List<dynamic>> fetchStackData() async {
-    try {
-      final String response =
-          await rootBundle.rootBundle.loadString('assets/mock_json.json');
-      final data = json.decode(response);
-      return data['items'];
-    } catch (e) {
-      print('Error loading local JSON: $e');
-      throw Exception('Error loading local JSON');
-    }
-  }
 }

@@ -18,7 +18,8 @@ class _CreditPageState extends State<CreditPage> with TickerProviderStateMixin {
   Map<String, dynamic>? stack1;
   Map<String, dynamic>? stack2;
   Map<String, dynamic>? stack3;
-  bool first = false;
+  bool stackon1 = false;
+  bool stackon2 = false;
 
   late AnimationController controller;
   late Animation sizeAnimation;
@@ -27,11 +28,27 @@ class _CreditPageState extends State<CreditPage> with TickerProviderStateMixin {
 
   void exitpage1(AnimationController ac) {
     ac.reverse();
-    print("This is on exit");
+    stackon1 = !stackon1;
+    setState(() {});
+    print("This is on exit 1");
   }
 
-  void onnextpage(AnimationController ac) {
+  void exitpage2(AnimationController ac) {
+    ac.reverse();
+    stackon2 = !stackon2;
+    setState(() {});
+    print("This is on exit 2");
+  }
+
+  void changestack() {
+    stackon2 = !stackon2;
+    setState(() {});
+  }
+
+  void onnextpage1(AnimationController ac) {
     ac.forward();
+    stackon1 = !stackon1;
+    print("This is on nextpage 1");
   }
 
   void separateStackData(List<dynamic> stackData) {
@@ -78,11 +95,11 @@ class _CreditPageState extends State<CreditPage> with TickerProviderStateMixin {
             Column(
               children: [
                 SizedBox(
-                  height: 100,
+                  height: 50,
                   child: Stack(
                     children: [
                       Positioned(
-                        top: 20,
+                        top: 10,
                         left: 20,
                         child: Container(
                           width: 40,
@@ -101,7 +118,7 @@ class _CreditPageState extends State<CreditPage> with TickerProviderStateMixin {
                         ),
                       ),
                       Positioned(
-                        top: 20,
+                        top: 10,
                         right: 20,
                         child: Container(
                           width: 40,
@@ -150,115 +167,169 @@ class _CreditPageState extends State<CreditPage> with TickerProviderStateMixin {
                     ],
                   ),
                 ),
-                const SizedBox(height: 50),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Column(
+                const SizedBox(height: 10),
+                stackon1
+                    ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            stack1?['open_state']['body']['title'] ??
-                                'No Title',
-                            style: GoogleFonts.poppins(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 12),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF1A1C23),
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            stack1?['open_state']['body']['subtitle'] ??
-                                'No Title',
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              color: Colors.grey[600],
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    Center(
-                      child: SizedBox(
-                        height: 350,
-                        width: 380,
-                        child: Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 10,
-                                offset: const Offset(0, 5),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              CircularPercentIndicator(
-                                radius: 100.0,
-                                lineWidth: 12.0,
-                                percent: 0.7,
-                                center: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                            margin: const EdgeInsets.all(16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      stack1?['open_state']?['body']?['card']
-                                              ?['header'] ??
-                                          'No Title',
+                                      "credit amount",
                                       style: GoogleFonts.poppins(
-                                        fontSize: 16,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    const Text(
-                                      "₹150000",
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.grey[600],
                                       ),
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      stack1?['open_state']?['body']?['card']
-                                              ?['description'] ??
-                                          '',
+                                      "₹1,50,000",
                                       style: GoogleFonts.poppins(
-                                        fontSize: 14,
-                                        color: Colors.green,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
                                       ),
                                     ),
                                   ],
                                 ),
-                                progressColor: Colors.orange,
-                                backgroundColor: Colors.orange.withOpacity(0.3),
-                                circularStrokeCap: CircularStrokeCap.round,
-                              ),
-                              const SizedBox(height: 16),
-                              Text(
-                                stack1?['open_state']?['body']?['footer'] ?? '',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 12,
-                                  color: Colors.grey[600],
+                                const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.white,
+                                  size: 24,
                                 ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
+                        ],
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  stack1?['open_state']['body']['title'] ??
+                                      'No Title',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  stack1?['open_state']['body']['subtitle'] ??
+                                      'No Title',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14,
+                                    color: Colors.grey[600],
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          Center(
+                            child: SizedBox(
+                              height: 350,
+                              width: 380,
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 5),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const SizedBox(height: 20),
+                                    CircularPercentIndicator(
+                                      radius: 100.0,
+                                      lineWidth: 12.0,
+                                      percent: 0.7,
+                                      center: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            stack1?['open_state']?['body']
+                                                    ?['card']?['header'] ??
+                                                'No Title',
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 16,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          const Text(
+                                            "₹150000",
+                                            style: TextStyle(
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            stack1?['open_state']?['body']
+                                                    ?['card']?['description'] ??
+                                                '',
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 14,
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      progressColor: Colors.orange,
+                                      backgroundColor:
+                                          Colors.orange.withOpacity(0.3),
+                                      circularStrokeCap:
+                                          CircularStrokeCap.round,
+                                    ),
+                                    const SizedBox(height: 40),
+                                    Text(
+                                      stack1?['open_state']?['body']
+                                              ?['footer'] ??
+                                          '',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 12,
+                                        color: Colors.grey[600],
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
               ],
             ),
             Align(
@@ -267,7 +338,7 @@ class _CreditPageState extends State<CreditPage> with TickerProviderStateMixin {
                 onTap: () {
                   controller.forward();
                   setState(() {
-                    first = !first;
+                    stackon1 = true;
                   });
                 },
                 child: Container(
@@ -297,8 +368,9 @@ class _CreditPageState extends State<CreditPage> with TickerProviderStateMixin {
                   bottom: double.tryParse(sizeAnimation.value.toString()),
                   child: SimplePage(
                     onexit1: () => exitpage1(controller),
-                    onnext: () => onnextpage(controller1),
+                    onnext: () => onnextpage1(controller1),
                     stack2: stack2,
+                    stackfinal: false,
                   ),
                 );
               },
@@ -312,6 +384,7 @@ class _CreditPageState extends State<CreditPage> with TickerProviderStateMixin {
                       onexit1: () => exitpage1(controller1),
                       onnext: () {},
                       stack3: stack3,
+                      stackfinal: false,
                     ));
               },
               animation: controller1,
