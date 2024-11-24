@@ -1,5 +1,5 @@
-import 'package:cred_assignment/colors.dart';
-import 'package:cred_assignment/creditpage.dart';
+import 'package:cred_assignment/stack/creditpage.dart';
+import 'package:cred_assignment/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
@@ -74,11 +74,10 @@ class _HomePageState extends State<HomePage> {
                       ),
                       child: const Center(
                         child: Text(
-                          'Credit Score',
+                          'Click Here to Start',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),

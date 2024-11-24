@@ -1,5 +1,8 @@
-import 'package:cred_assignment/colors.dart';
+import 'package:cred_assignment/utils/colors.dart';
+import 'package:cred_assignment/stack/stack1.dart';
+import 'package:cred_assignment/stack/stack2.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class CreditPage extends StatefulWidget {
@@ -11,10 +14,25 @@ class CreditPage extends StatefulWidget {
   State<CreditPage> createState() => _CreditPageState();
 }
 
-class _CreditPageState extends State<CreditPage> {
+class _CreditPageState extends State<CreditPage> with TickerProviderStateMixin {
   Map<String, dynamic>? stack1;
   Map<String, dynamic>? stack2;
   Map<String, dynamic>? stack3;
+  bool first = false;
+
+  late AnimationController controller;
+  late Animation sizeAnimation;
+  late AnimationController controller1;
+  late Animation sizeAnimation1;
+
+  void exitpage1(AnimationController ac) {
+    ac.reverse();
+    print("This is on exit");
+  }
+
+  void onnextpage(AnimationController ac) {
+    ac.forward();
+  }
 
   void separateStackData(List<dynamic> stackData) {
     if (stackData.length >= 3) {
@@ -29,10 +47,23 @@ class _CreditPageState extends State<CreditPage> {
   @override
   void initState() {
     super.initState();
+    final mq = MediaQueryData.fromView(WidgetsBinding.instance.window);
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
+    sizeAnimation = Tween(begin: -mq.size.height, end: 0.0).animate(controller);
+
+    controller1 = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    sizeAnimation1 =
+        Tween(begin: -mq.size.height, end: 0.0).animate(controller1);
+
     separateStackData(widget.stackData);
 
-    // Print to verify
-    print("Stack 1: ${stack1}");
+    print("Stack 1: $stack1");
     print("Stack 2: $stack2");
     print("Stack 3: $stack3");
   }
@@ -40,9 +71,9 @@ class _CreditPageState extends State<CreditPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(0xFF0E1419),
-        body: Stack(
+      child: Material(
+        color: const Color(0xFF0E1419),
+        child: Stack(
           children: [
             Column(
               children: [
@@ -86,15 +117,28 @@ class _CreditPageState extends State<CreditPage> {
                               showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
-                                  title: const Text("Help"),
-                                  content: const Text(
-                                      "Information about this page."),
+                                  title: Text(
+                                    "Help",
+                                    style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  content: Text(
+                                    "Information about this page.",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                    ),
+                                  ),
                                   actions: [
                                     TextButton(
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
-                                      child: const Text("Close"),
+                                      child: Text(
+                                        "Close",
+                                        style: GoogleFonts.poppins(),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -118,7 +162,7 @@ class _CreditPageState extends State<CreditPage> {
                           Text(
                             stack1?['open_state']['body']['title'] ??
                                 'No Title',
-                            style: const TextStyle(
+                            style: GoogleFonts.poppins(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -128,7 +172,7 @@ class _CreditPageState extends State<CreditPage> {
                           Text(
                             stack1?['open_state']['body']['subtitle'] ??
                                 'No Title',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               fontSize: 14,
                               color: Colors.grey[600],
                             ),
@@ -169,7 +213,7 @@ class _CreditPageState extends State<CreditPage> {
                                       stack1?['open_state']?['body']?['card']
                                               ?['header'] ??
                                           'No Title',
-                                      style: const TextStyle(
+                                      style: GoogleFonts.poppins(
                                         fontSize: 16,
                                         color: Colors.grey,
                                       ),
@@ -186,8 +230,9 @@ class _CreditPageState extends State<CreditPage> {
                                     const SizedBox(height: 4),
                                     Text(
                                       stack1?['open_state']?['body']?['card']
-                                          ?['description'],
-                                      style: const TextStyle(
+                                              ?['description'] ??
+                                          '',
+                                      style: GoogleFonts.poppins(
                                         fontSize: 14,
                                         color: Colors.green,
                                       ),
@@ -200,8 +245,8 @@ class _CreditPageState extends State<CreditPage> {
                               ),
                               const SizedBox(height: 16),
                               Text(
-                                stack1?['open_state']?['body']?['footer'],
-                                style: TextStyle(
+                                stack1?['open_state']?['body']?['footer'] ?? '',
+                                style: GoogleFonts.poppins(
                                   fontSize: 12,
                                   color: Colors.grey[600],
                                 ),
@@ -220,7 +265,10 @@ class _CreditPageState extends State<CreditPage> {
               alignment: Alignment.bottomCenter,
               child: GestureDetector(
                 onTap: () {
-                  //add the animation logic here
+                  controller.forward();
+                  setState(() {
+                    first = !first;
+                  });
                 },
                 child: Container(
                   height: 60,
@@ -233,16 +281,40 @@ class _CreditPageState extends State<CreditPage> {
                   ),
                   child: Center(
                     child: Text(
-                      stack1?['cta_text'],
-                      style: const TextStyle(
+                      stack1?['cta_text'] ?? '',
+                      style: GoogleFonts.poppins(
                         color: Colors.white,
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                 ),
               ),
+            ),
+            AnimatedBuilder(
+              builder: (context, _) {
+                return Positioned(
+                  bottom: double.tryParse(sizeAnimation.value.toString()),
+                  child: SimplePage(
+                    onexit1: () => exitpage1(controller),
+                    onnext: () => onnextpage(controller1),
+                    stack2: stack2,
+                  ),
+                );
+              },
+              animation: controller,
+            ),
+            AnimatedBuilder(
+              builder: (context, _) {
+                return Positioned(
+                    bottom: double.tryParse(sizeAnimation1.value.toString()),
+                    child: SimplePage2(
+                      onexit1: () => exitpage1(controller1),
+                      onnext: () {},
+                      stack3: stack3,
+                    ));
+              },
+              animation: controller1,
             ),
           ],
         ),
